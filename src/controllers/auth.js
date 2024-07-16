@@ -5,15 +5,15 @@ import { comparePassword, hashPassword } from "../utils/password.js";
 
 export const register = async (req, res, next) => {
 	try {
-		const { email, password, username } = req.body;
-		console.log({ email, password, username });
-		// const useExists = await User.findOne({ email });
+		const { email, password } = req.body;
+		console.log({ email, password });
+		const useExists = await User.findOne({ email });
 
-		// if (useExists) {
-		// 	return res.status(400).json({
-		// 		message: errorMessages.EMAIL_EXIST || "Email already exists!",
-		// 	});
-		// }
+		if (useExists) {
+			return res.status(400).json({
+				message: errorMessages.EMAIL_EXIST || "Email already exists!",
+			});
+		}
 
 		const hassPass = hashPassword(password);
 		if (!hassPass) {
@@ -24,7 +24,6 @@ export const register = async (req, res, next) => {
 		const user = {
 			email,
 			password: hassPass,
-			username,
 		};
 
 		const data = await User.create(user);
@@ -47,7 +46,6 @@ export const login = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
 		const userExists = await User.findOne({ email });
-		// console.log(userExists);
 		if (!userExists) {
 			return res.status(400).json({
 				message: errorMessages.USER_NOT_FOUND,

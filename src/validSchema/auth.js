@@ -10,11 +10,6 @@ export const registerSchema = Joi.object({
 		"string.min": "Password phải có ít nhất 6 ký tự!",
 		"string.max": "Password không được quá 255 ký tự!",
 	}),
-	username: Joi.string().min(6).max(255).messages({
-		"string.empty": "Password không được để trống!",
-		"string.min": "Password phải có ít nhất 6 ký tự!",
-		"string.max": "Password không được quá 255 ký tự!",
-	}),
 });
 
 export const loginSchema = Joi.object({
