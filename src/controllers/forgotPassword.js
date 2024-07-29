@@ -10,7 +10,7 @@ export const forgotPassword = async (req, res, next) => {
 
 		if (!user) {
 			return res.status(404).json({
-				message: errorMessages.USER_NOT_FOUND,
+				message: "Email nay chua dk dang ky!",
 			});
 		}
 

@@ -9,7 +9,7 @@ import {
 } from "../controllers/category.js";
 import { checkIsAdmin } from "../middlewares/checkIsAdmin.js";
 import { validBodyRequest } from "../middlewares/validBodyRequest.js";
-import { checkAuth } from "../utils/jwt.js";
+import { checkAuth } from "../middlewares/checkAuth.js";
 import { categorySchema } from "../validSchema/category.js";
 
 const routerCategory = Router();
@@ -17,7 +17,7 @@ routerCategory.get("/", getCategories);
 routerCategory.get("/:id", getCategoryById);
 
 routerCategory.use(checkAuth, checkIsAdmin);
-routerCategory.delete("/delete/:id", deleteCategory);
+routerCategory.delete("/:id", deleteCategory);
 routerCategory.patch("/:id", softDeleteCategory);
 
 routerCategory.use(validBodyRequest(categorySchema));

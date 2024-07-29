@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getUserById, getUsers } from "../controllers/user.js";
-import { checkAuth } from "../utils/jwt.js";
+import { checkAuth } from "../middlewares/checkAuth.js";
 import { checkIsAdmin } from "../middlewares/checkIsAdmin.js";
 
 const routerUser = Router();

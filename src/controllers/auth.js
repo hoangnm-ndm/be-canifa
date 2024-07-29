@@ -6,7 +6,7 @@ import { comparePassword, hashPassword } from "../utils/password.js";
 export const register = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
-		console.log({ email, password });
+
 		const useExists = await User.findOne({ email });
 
 		if (useExists) {
@@ -52,10 +52,7 @@ export const login = async (req, res, next) => {
 			});
 		}
 
-		console.log({ password, hashPass: userExists.password });
-
 		const comparePass = await comparePassword(password, userExists.password);
-		console.log(comparePass);
 		if (!comparePass) {
 			return res.status(400).json({
 				message: errorMessages.PASSWORD_NOT_MATCH,
@@ -69,6 +66,19 @@ export const login = async (req, res, next) => {
 			message: successMessages.LOGIN_SUCCESS,
 			token,
 			user: userExists,
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const getProfile = async (req, res, next) => {
+	try {
+		const user = req.user;
+		user.password = undefined;
+		return res.status(200).json({
+			message: successMessages.GET_PROFILE_SUCCESS || "Lay thong tin thanh cong!",
+			user,
 		});
 	} catch (error) {
 		next(error);
