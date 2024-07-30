@@ -1,3 +1,4 @@
+import { errorMessages } from "../constants/message.js";
 import User from "../models/User.js";
 import { verifyToken } from "../utils/jwt.js";
 
@@ -6,18 +7,17 @@ export const checkAuth = async (req, res, next) => {
 		const token = req.headers?.authorization?.split(" ")[1];
 		if (!token) {
 			return res.status(400).json({
-				message: errorMessages.TOKEN_NOT_FOUND | "Nguoi dung chua dang nhap!",
+				message: "Nguoi dung chua dang nhap!",
 			});
 		}
 		const decode = verifyToken(token);
 		if (!decode) {
 			return res.status(400).json({
-				message: errorMessages.TOKEN_INVALID | "Token khong hop le!",
+				message: "Token khong hop le!",
 			});
 		}
 		const user = await User.findById(decode._id);
 		req.user = user;
-		console.log(user);
 		next();
 	} catch (error) {
 		next(error);

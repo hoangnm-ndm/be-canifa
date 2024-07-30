@@ -11,4 +11,4 @@ const cartSchema = new Schema({
 	totalPrice: { type: Number, required: true },
 });
 
-export const Cart = model("Cart", cartSchema);
+export default model("Cart", cartSchema);

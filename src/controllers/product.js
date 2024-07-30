@@ -61,15 +61,27 @@ export const deleteProduct = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
 	try {
 		const data = await Product.create(req.body);
-		const updateCategory = await Category.findByIdAndUpdate(
-			data.category,
-			{
-				$push: { products: data._id },
-			},
-			{ new: true }
-		);
-		console.log(data);
-		console.log(updateCategory);
+		let updateCategory = null;
+		if (!!data.category) {
+			updateCategory = await Category.findByIdAndUpdate(
+				data.category,
+				{
+					$push: { products: data._id },
+				},
+				{ new: true }
+			);
+		} else {
+			updateCategory = await Category.findByIdAndUpdate(
+				"66a85a3900516fd35af14fcd",
+				{
+					$push: { products: data._id },
+				},
+				{ new: true }
+			);
+
+			// Nếu không có category thì sẽ thêm vào category mặc định
+		}
+
 		if (data && updateCategory) {
 			return res.status(200).json({
 				message: "Tao moi thanh cong!",
