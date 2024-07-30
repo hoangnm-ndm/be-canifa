@@ -72,6 +72,7 @@ export const checkout = async (req, res, next) => {
 		const userId = req.userId;
 		const cart = await Cart.findOne({ userId }).populate("products.product");
 		if (!cart) return res.status(400).json({ message: "Cart is empty" });
+		// Viết thêm logic về thanh toán tuỳ xem chuyển khoản theo phương thức nào hoặc dùng api bên thứ 3.
 
 		const order = new Order({
 			user: userId,
@@ -79,13 +80,12 @@ export const checkout = async (req, res, next) => {
 			totalPrice: cart.totalPrice,
 		});
 		await order.save();
-		// Viết thêm logic về thanh toán tuỳ xem chuyển khoản theo phương thức nào hoặc dùng api bên thứ 3.
 
 		// Xoa gio hang sau khi thanh toan
 		cart.products = [];
 		cart.totalPrice = 0;
 		await cart.save();
-		return res.status(200).json({ message: "Checkout successful" });
+		return res.status(200).json({ message: "Checkout successfully" });
 	} catch (error) {
 		next(error);
 	}
